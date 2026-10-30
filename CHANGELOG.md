@@ -1,8 +1,8 @@
 # Changelog
 
-## 0.1.0 (unreleased)
+## 0.1.0
 
-First version.
+Initial release. See the [release notes](docs/releases/v0.1.0.md).
 
 - Measure a device's power with any whole-home power sensor by switching it off, on and off again and comparing the readings.
 - Uncertainty and quality rating from how far the two off readings drift apart, the meter's own scatter, and the spread between repeated cycles.
