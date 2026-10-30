@@ -1,0 +1,27 @@
+{
+  "entity": {
+    "sensor": {
+      "status": {
+        "default": "mdi:flash-outline",
+        "state": {
+          "idle": "mdi:flash-outline",
+          "measuring": "mdi:timer-sand",
+          "finished": "mdi:check-circle-outline",
+          "failed": "mdi:alert-circle-outline",
+          "cancelled": "mdi:cancel"
+        }
+      },
+      "last_result": {
+        "default": "mdi:flash"
+      }
+    }
+  },
+  "services": {
+    "start_measurement": {
+      "service": "mdi:play-circle-outline"
+    },
+    "cancel_measurement": {
+      "service": "mdi:stop-circle-outline"
+    }
+  }
+}

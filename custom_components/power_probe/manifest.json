@@ -1,0 +1,14 @@
+{
+  "domain": "power_probe",
+  "name": "Power Probe",
+  "codeowners": ["@endoftheline818"],
+  "config_flow": true,
+  "dependencies": ["http", "panel_custom", "websocket_api"],
+  "documentation": "https://github.com/EndOfTheLine-HA/ha-power-probe",
+  "integration_type": "service",
+  "iot_class": "calculated",
+  "issue_tracker": "https://github.com/EndOfTheLine-HA/ha-power-probe/issues",
+  "requirements": [],
+  "single_config_entry": true,
+  "version": "0.1.0"
+}

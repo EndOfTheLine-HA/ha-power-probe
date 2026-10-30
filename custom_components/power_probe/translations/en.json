@@ -1,0 +1,187 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Power Probe",
+        "description": "Pick the sensor that reports your whole-home power draw (Refoss, Emporia, Sense, Shelly EM, IoTaWatt and similar). Power Probe switches a device off and on and compares the readings. You can pick a different meter for any single run later.",
+        "data": {
+          "power_entity": "Whole-home power sensor",
+          "timing_profile": "How fast does the sensor update?",
+          "cycles": "Repeat the on/off cycle",
+          "restore_state": "Put the device back how it was"
+        },
+        "data_description": {
+          "power_entity": "A sensor in watts or kilowatts. A net meter on a house with solar gives noisier results.",
+          "timing_profile": "Fast: changes every few seconds. Medium: every 10 to 30 seconds. Slow: about once a minute. If unsure, pick slow. Slower than that needs Custom, with a window of at least three updates. Custom lets you set the seconds yourself.",
+          "cycles": "1 runs off, on, off. More cycles average out other loads switching in the house, at the cost of time.",
+          "restore_state": "After the final off reading, turn the device back on if it was on when the run started."
+        }
+      },
+      "timing": {
+        "title": "Custom timing",
+        "description": "Settle time must be longer than the sensor's update interval, or the first readings of each step still show the previous state.",
+        "data": {
+          "settle_time": "Settle time",
+          "sample_window": "Reading window",
+          "sample_interval": "Time between readings"
+        },
+        "data_description": {
+          "settle_time": "Wait after each switch before reading.",
+          "sample_window": "How long to keep reading after the settle time. The average of these readings is used.",
+          "sample_interval": "Seconds between readings inside the window."
+        }
+      }
+    },
+    "error": {
+      "interval_longer_than_window": "The time between readings cannot be longer than the reading window."
+    },
+    "abort": {
+      "single_instance_allowed": "Power Probe is already set up. Change its settings from the integration's options."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Power Probe settings",
+        "description": "These are the defaults. The sidebar panel and the start_measurement action can override them for a single run.",
+        "data": {
+          "power_entity": "Whole-home power sensor",
+          "timing_profile": "How fast does the sensor update?",
+          "cycles": "Repeat the on/off cycle",
+          "restore_state": "Put the device back how it was"
+        },
+        "data_description": {
+          "power_entity": "A sensor in watts or kilowatts.",
+          "timing_profile": "Fast: changes every few seconds. Medium: every 10 to 30 seconds. Slow: about once a minute. If unsure, pick slow. Slower than that needs Custom, with a window of at least three updates.",
+          "cycles": "1 runs off, on, off. More cycles average out other loads switching in the house, at the cost of time.",
+          "restore_state": "After the final off reading, turn the device back on if it was on when the run started."
+        }
+      },
+      "timing": {
+        "title": "Custom timing",
+        "description": "Settle time must be longer than the sensor's update interval, or the first readings of each step still show the previous state.",
+        "data": {
+          "settle_time": "Settle time",
+          "sample_window": "Reading window",
+          "sample_interval": "Time between readings"
+        },
+        "data_description": {
+          "settle_time": "Wait after each switch before reading.",
+          "sample_window": "How long to keep reading after the settle time. The average of these readings is used.",
+          "sample_interval": "Seconds between readings inside the window."
+        }
+      }
+    },
+    "error": {
+      "interval_longer_than_window": "The time between readings cannot be longer than the reading window."
+    }
+  },
+  "selector": {
+    "timing_profile": {
+      "options": {
+        "fast": "Fast (every few seconds)",
+        "medium": "Medium (every 10 to 30 seconds)",
+        "slow": "Slow (about once a minute)",
+        "custom": "Custom"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "status": {
+        "name": "Status",
+        "state": {
+          "idle": "Idle",
+          "measuring": "Measuring",
+          "finished": "Finished",
+          "failed": "Failed",
+          "cancelled": "Cancelled"
+        }
+      },
+      "last_result": {
+        "name": "Last measured power"
+      }
+    }
+  },
+  "exceptions": {
+    "not_set_up": {
+      "message": "Power Probe is not set up."
+    },
+    "busy": {
+      "message": "A measurement is already running. Cancel it or wait for it to finish."
+    },
+    "no_meter": {
+      "message": "No whole-home power sensor is configured. Choose one in the integration's options or pass power_entity."
+    },
+    "device_not_supported": {
+      "message": "Power Probe cannot switch {domain} entities."
+    },
+    "device_unavailable": {
+      "message": "{entity_id} is not available."
+    },
+    "meter_unavailable": {
+      "message": "{entity_id} has no usable reading right now."
+    },
+    "meter_not_power": {
+      "message": "{entity_id} reports in {unit}, which is not a power unit. Choose a sensor in W or kW."
+    },
+    "interval_longer_than_window": {
+      "message": "The time between readings cannot be longer than the reading window."
+    },
+    "device_did_not_change": {
+      "message": "{entity_id} did not turn {target} within 30 seconds."
+    },
+    "meter_unavailable_during_run": {
+      "message": "The whole-home power sensor stopped giving readings during the run."
+    },
+    "command_failed": {
+      "message": "Home Assistant could not switch the device. Check the log."
+    },
+    "unknown": {
+      "message": "The measurement failed. Check the log."
+    },
+    "interrupted": {
+      "message": "A restart interrupted this run. The device was put back the way it was."
+    }
+  },
+  "services": {
+    "start_measurement": {
+      "name": "Start measurement",
+      "description": "Switch a device off, read the whole-home meter, switch it on, read again, switch it off and read a final time. The difference is the device's draw. Returns the result when called with a response variable.",
+      "fields": {
+        "entity_id": {
+          "name": "Device",
+          "description": "The entity to switch on and off."
+        },
+        "power_entity": {
+          "name": "Whole-home power sensor",
+          "description": "Overrides the sensor chosen in the integration's options for this run."
+        },
+        "settle_time": {
+          "name": "Settle time",
+          "description": "Seconds to wait after each switch before reading."
+        },
+        "sample_window": {
+          "name": "Reading window",
+          "description": "Seconds of readings to average after the settle time."
+        },
+        "sample_interval": {
+          "name": "Time between readings",
+          "description": "Seconds between readings inside the window."
+        },
+        "cycles": {
+          "name": "Cycles",
+          "description": "Number of on/off cycles to average."
+        },
+        "restore_state": {
+          "name": "Restore state",
+          "description": "Put the device back how it was at the start of the run."
+        }
+      }
+    },
+    "cancel_measurement": {
+      "name": "Cancel measurement",
+      "description": "Stop the run in progress and put the device back."
+    }
+  }
+}

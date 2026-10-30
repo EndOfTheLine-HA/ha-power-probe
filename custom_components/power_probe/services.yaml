@@ -1,0 +1,53 @@
+start_measurement:
+  fields:
+    entity_id:
+      required: true
+      example: switch.coffee_maker
+      selector:
+        entity:
+          domain:
+            - switch
+            - light
+            - fan
+            - input_boolean
+            - humidifier
+            - media_player
+            - remote
+            - climate
+    power_entity:
+      selector:
+        entity:
+          domain: sensor
+          device_class: power
+    settle_time:
+      selector:
+        number:
+          min: 0
+          max: 600
+          unit_of_measurement: s
+          mode: box
+    sample_window:
+      selector:
+        number:
+          min: 5
+          max: 600
+          unit_of_measurement: s
+          mode: box
+    sample_interval:
+      selector:
+        number:
+          min: 1
+          max: 60
+          unit_of_measurement: s
+          mode: box
+    cycles:
+      selector:
+        number:
+          min: 1
+          max: 5
+          step: 1
+          mode: box
+    restore_state:
+      selector:
+        boolean:
+cancel_measurement:
